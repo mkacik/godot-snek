@@ -2,6 +2,8 @@ extends Node2D
 
 const Common = preload("res://lib/common.gd")
 
+signal game_over
+
 @export var cell_size: int = 32
 @export var speed: int = 200
 
@@ -13,21 +15,31 @@ var next_direction: Vector2
 
 var target_position: Vector2
 
+func start():
+    direction = Vector2.RIGHT
+    next_direction = direction
+    target_position = position
+    $AnimatedSprite2D.animation = "right"
+    $AnimatedSprite2D.play()
+    show()
+    
+    $MoveTimer.start()
+    
+func stop():
+    hide()
+    $MoveTimer.stop()
+    game_over.emit()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    min_pos = Vector2.ZERO
-
+    hide()
+    
     var screen_size = get_viewport_rect().size
     var max_x = (floori(screen_size.x / cell_size) - 1) * cell_size
     var max_y = (floori(screen_size.y / cell_size) - 1) * cell_size
     max_pos = Vector2(max_x, max_y)
+    min_pos = Vector2.ZERO
 
-    direction = Vector2.RIGHT
-    next_direction = direction
-    target_position = position
-    
-    $AnimatedSprite2D.animation = "idle"
-    $AnimatedSprite2D.play()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float):
@@ -56,4 +68,4 @@ func _on_move_timer_timeout() -> void:
     target_position = Common.clamped(position + direction * cell_size, min_pos, max_pos);
     # if target position was not changed, we hit something, so it's game over
     if position == target_position:
-        $AnimatedSprite2D.animation = "angry"
+        stop()

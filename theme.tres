@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://ohbxnwpsmf82"]
+
+[ext_resource type="FontFile" uid="uid://cvbbcuavrtrn" path="res://fonts/Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf" id="1_xciue"]
+
+[resource]
+default_font = ExtResource("1_xciue")
+default_font_size = 48

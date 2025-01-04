@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://ccmivnmm1cxdu"]
+
+[ext_resource type="Script" path="res://scenes/hud.gd" id="1_dcsrn"]
+[ext_resource type="Theme" uid="uid://ohbxnwpsmf82" path="res://theme.tres" id="1_r2ti2"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_dcsrn")
+
+[node name="StartButton" type="Button" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -41.5
+offset_right = 140.0
+offset_bottom = 41.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_r2ti2")
+text = "START"
+
+[node name="GameOverMessage" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -216.0
+offset_top = 100.0
+offset_right = 216.0
+offset_bottom = 148.0
+grow_horizontal = 2
+theme = ExtResource("1_r2ti2")
+text = "GAME OVER"
+
+[connection signal="start_game" from="." to="." method="_on_start_game"]
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

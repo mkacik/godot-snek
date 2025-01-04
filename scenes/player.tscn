@@ -130,6 +130,5 @@ animation = &"angry"
 centered = false
 
 [node name="MoveTimer" type="Timer" parent="."]
-autostart = true
 
 [connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]
