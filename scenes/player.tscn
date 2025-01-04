@@ -122,7 +122,6 @@ animations = [{
 
 [node name="Player" type="Node2D"]
 script = ExtResource("1_7k03j")
-speed = 200
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -131,6 +130,6 @@ animation = &"angry"
 centered = false
 
 [node name="MoveTimer" type="Timer" parent="."]
-wait_time = 2.0
+autostart = true
 
 [connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]
