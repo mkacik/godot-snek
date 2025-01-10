@@ -5,30 +5,23 @@ const Common = preload("res://lib/common.gd")
 signal game_over
 
 @export var cell_size: int = 16
-@export var speed: int = 200
+@export var move_animation_speed: int = 200
 
 var direction: Vector2
 var next_direction: Vector2
 var target_position: Vector2
 
-func reset(grid_position: Vector2):
-    position = grid_position * cell_size
-    target_position = position
-
-func start(grid_posistion: Vector2):
-    reset(grid_posistion)
-    direction = Vector2.RIGHT
-    next_direction = direction
+func start(new_position: Vector2):
+    position = new_position
+    target_position = new_position
+    
+    direction = Vector2.ZERO
+    next_direction = Vector2.RIGHT
     $CollisionShape2D.set_deferred("disabled", false)
     show()  
-    
-func stop():
-    hide()
-    game_over.emit()
 
 func _ready():
     hide()
-    # var screen_size = get_viewport_rect().size
 
 func _process(delta: float):
     if Input.is_action_pressed("move_right"):
@@ -46,7 +39,7 @@ func _process(delta: float):
 
     if position != target_position:
         var previous_position = position
-        var velocity = direction * speed
+        var velocity = direction * move_animation_speed
         # enforce new position to be between current and target position
         position = Common.clamped(position + velocity * delta, previous_position, target_position)
 
@@ -58,4 +51,4 @@ func move() -> void:
     target_position = position + direction * cell_size;
 
 func _on_body_entered(_body: Node2D) -> void:
-    stop()
+    game_over.emit()

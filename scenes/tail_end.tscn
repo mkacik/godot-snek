@@ -1,13 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://cy37563fghig2"]
+[gd_scene load_steps=3 format=3 uid="uid://bvrxvn86aje38"]
 
-[ext_resource type="Script" path="res://scenes/tail.gd" id="1_ku24m"]
+[ext_resource type="Script" path="res://scenes/tail_end.gd" id="1_qr2m2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ajpk"]
 size = Vector2(16, 16)
 
-[node name="Tail" type="AnimatableBody2D" groups=["tail"]]
+[node name="TailEnd" type="AnimatableBody2D"]
 sync_to_physics = false
-script = ExtResource("1_ku24m")
+script = ExtResource("1_qr2m2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(8, 8)
@@ -16,4 +16,4 @@ shape = SubResource("RectangleShape2D_5ajpk")
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_right = 16.0
 offset_bottom = 16.0
-color = Color(1, 0.25, 0.25, 1)
+color = Color(1, 0.25098, 0.25098, 1)

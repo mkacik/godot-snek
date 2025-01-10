@@ -8,7 +8,7 @@ size = Vector2(16, 16)
 [node name="Wall" type="StaticBody2D" groups=["walls"]]
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["walls"]]
 position = Vector2(8, 8)
 shape = SubResource("RectangleShape2D_d1k43")
 

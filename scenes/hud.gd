@@ -11,7 +11,7 @@ func _process(_delta: float) -> void:
 
 func show_game_over_message():
     $GameOverMessage.show()
-    await get_tree().create_timer(5.0).timeout
+    await get_tree().create_timer(3.0).timeout
     $GameOverMessage.hide()
     $StartButton.show()
 
