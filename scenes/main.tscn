@@ -1,13 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://ci0v6bd3v8irk"]
+[gd_scene load_steps=5 format=3 uid="uid://ci0v6bd3v8irk"]
 
 [ext_resource type="PackedScene" uid="uid://crojdhwqcostg" path="res://scenes/player.tscn" id="1_e3l1q"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_pmvye"]
 [ext_resource type="PackedScene" uid="uid://ccmivnmm1cxdu" path="res://scenes/hud.tscn" id="3_uv6ks"]
+[ext_resource type="PackedScene" uid="uid://02oxhj8djhwr" path="res://scenes/level.tscn" id="4_0euvk"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_pmvye")
 
 [node name="Player" parent="." instance=ExtResource("1_e3l1q")]
+speed = 400
+
+[node name="Level" parent="." instance=ExtResource("4_0euvk")]
 
 [node name="HUD" parent="." instance=ExtResource("3_uv6ks")]
 

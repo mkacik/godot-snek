@@ -1,28 +1,24 @@
-extends Node2D
+extends Area2D
 
 const Common = preload("res://lib/common.gd")
 
 signal game_over
 
-@export var cell_size: int = 32
+@export var cell_size: int = 16
 @export var speed: int = 200
-
-var max_pos: Vector2
-var min_pos: Vector2
 
 var direction: Vector2
 var next_direction: Vector2
-
 var target_position: Vector2
 
-func start():
-    direction = Vector2.RIGHT
-    next_direction = direction
+func reset_position():
+    position = Vector2(cell_size * 8, cell_size * 5)
     target_position = position
-    $AnimatedSprite2D.animation = "right"
-    $AnimatedSprite2D.play()
-    show()
-    
+
+func start():
+    reset_position()
+    $CollisionShape2D.set_deferred("disabled", false)
+    show()  
     $MoveTimer.start()
     
 func stop():
@@ -30,31 +26,25 @@ func stop():
     $MoveTimer.stop()
     game_over.emit()
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
     hide()
     
-    var screen_size = get_viewport_rect().size
-    var max_x = (floori(screen_size.x / cell_size) - 1) * cell_size
-    var max_y = (floori(screen_size.y / cell_size) - 1) * cell_size
-    max_pos = Vector2(max_x, max_y)
-    min_pos = Vector2.ZERO
-
+    # Initial direction
+    direction = Vector2.RIGHT
+    next_direction = direction
+    
+    # var screen_size = get_viewport_rect().size
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float):
     if Input.is_action_pressed("move_right"):
         next_direction = Vector2.RIGHT
-        $AnimatedSprite2D.animation = "right"
     elif Input.is_action_pressed("move_left"):
         next_direction = Vector2.LEFT
-        $AnimatedSprite2D.animation = "left"
     elif Input.is_action_pressed("move_down"):
         next_direction = Vector2.DOWN
-        $AnimatedSprite2D.animation = "down"
     elif Input.is_action_pressed("move_up"):
         next_direction = Vector2.UP
-        $AnimatedSprite2D.animation = "up"
 
     if position != target_position:
         var previous_position = position
@@ -65,7 +55,12 @@ func _process(delta: float):
 func _on_move_timer_timeout() -> void:
     direction = next_direction
     # enforce target position within screen bounds
-    target_position = Common.clamped(position + direction * cell_size, min_pos, max_pos);
+    target_position = position + direction * cell_size;
+
     # if target position was not changed, we hit something, so it's game over
-    if position == target_position:
-        stop()
+    #if position == target_position:
+    #   stop()
+
+func _on_body_entered(body: Node2D) -> void:
+    print(body)
+    stop()

@@ -7,6 +7,7 @@
 script = ExtResource("1_dcsrn")
 
 [node name="StartButton" type="Button" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -22,6 +23,7 @@ theme = ExtResource("1_r2ti2")
 text = "START"
 
 [node name="GameOverMessage" type="Label" parent="."]
+visible = false
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5

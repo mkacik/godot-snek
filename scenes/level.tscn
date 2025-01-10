@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://02oxhj8djhwr"]
+
+[ext_resource type="Script" path="res://scenes/level.gd" id="1_tjnu4"]
+[ext_resource type="PackedScene" uid="uid://kdaaygddkmlt" path="res://scenes/wall.tscn" id="2_arvb6"]
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_tjnu4")
+
+[node name="WallN" parent="." instance=ExtResource("2_arvb6")]
+
+[node name="WallS" parent="." instance=ExtResource("2_arvb6")]
+
+[node name="WallE" parent="." instance=ExtResource("2_arvb6")]
+
+[node name="WallW" parent="." instance=ExtResource("2_arvb6")]
