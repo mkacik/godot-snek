@@ -17,6 +17,8 @@ func reset_position():
 
 func start():
     reset_position()
+    direction = Vector2.RIGHT
+    next_direction = direction
     $CollisionShape2D.set_deferred("disabled", false)
     show()  
     $MoveTimer.start()
@@ -30,28 +32,33 @@ func _ready():
     hide()
     
     # Initial direction
-    direction = Vector2.RIGHT
-    next_direction = direction
+
     
     # var screen_size = get_viewport_rect().size
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float):
     if Input.is_action_pressed("move_right"):
-        next_direction = Vector2.RIGHT
+        if move_allowed(Vector2.RIGHT):
+            next_direction = Vector2.RIGHT
     elif Input.is_action_pressed("move_left"):
-        next_direction = Vector2.LEFT
+        if move_allowed(Vector2.LEFT):
+            next_direction = Vector2.LEFT
     elif Input.is_action_pressed("move_down"):
-        next_direction = Vector2.DOWN
+        if move_allowed(Vector2.DOWN):
+            next_direction = Vector2.DOWN
     elif Input.is_action_pressed("move_up"):
-        next_direction = Vector2.UP
+        if move_allowed(Vector2.UP):
+            next_direction = Vector2.UP
 
     if position != target_position:
         var previous_position = position
         var velocity = direction * speed
         # enforce new position to be between current and target position
         position = Common.clamped(position + velocity * delta, previous_position, target_position)
-        
+
+func move_allowed(next_direction) -> bool:
+    return (direction + next_direction) != Vector2.ZERO
+
 func _on_move_timer_timeout() -> void:
     direction = next_direction
     # enforce target position within screen bounds
