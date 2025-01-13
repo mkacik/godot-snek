@@ -3,6 +3,7 @@ extends Area2D
 const Common = preload("res://lib/common.gd")
 
 signal game_over
+signal apple_eaten
 
 @export var cell_size: int = 16
 @export var move_animation_speed: int = 200
@@ -18,7 +19,7 @@ func start(new_position: Vector2):
     direction = Vector2.ZERO
     next_direction = Vector2.RIGHT
     $CollisionShape2D.set_deferred("disabled", false)
-    show()  
+    show()
 
 func _ready():
     hide()
@@ -50,5 +51,9 @@ func move() -> void:
     direction = next_direction
     target_position = position + direction * cell_size;
 
-func _on_body_entered(_body: Node2D) -> void:
-    game_over.emit()
+func _on_body_entered(body: Node2D) -> void:
+    print(body.name)
+    if (body.name == "Apple"):
+        apple_eaten.emit()
+    else:
+        game_over.emit()

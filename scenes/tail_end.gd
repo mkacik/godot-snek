@@ -19,7 +19,6 @@ func _process(delta: float) -> void:
 func move(new_target_position: Vector2):
     direction = (new_target_position - target_position).normalized()
     target_position = new_target_position
-    print(position, " -> ", target_position)
 
 func start(new_position: Vector2):
     position = new_position

@@ -6,6 +6,7 @@
 size = Vector2(16, 16)
 
 [node name="Player" type="Area2D"]
+visible = false
 script = ExtResource("1_7k03j")
 metadata/_edit_group_ = true
 

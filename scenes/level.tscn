@@ -7,9 +7,13 @@
 script = ExtResource("1_tjnu4")
 
 [node name="WallN" parent="." instance=ExtResource("2_arvb6")]
+visible = true
 
 [node name="WallS" parent="." instance=ExtResource("2_arvb6")]
+visible = true
 
 [node name="WallE" parent="." instance=ExtResource("2_arvb6")]
+visible = true
 
 [node name="WallW" parent="." instance=ExtResource("2_arvb6")]
+visible = true

@@ -6,6 +6,7 @@
 size = Vector2(16, 16)
 
 [node name="Wall" type="StaticBody2D" groups=["walls"]]
+visible = false
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["walls"]]

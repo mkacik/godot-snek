@@ -8,6 +8,7 @@ size = Vector2(16, 16)
 [node name="Tail" type="AnimatableBody2D" groups=["tail"]]
 sync_to_physics = false
 script = ExtResource("1_ku24m")
+metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(8, 8)
