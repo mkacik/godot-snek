@@ -11,10 +11,6 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
     pass
 
-func _input(event):
-    if event.is_action_pressed("ui_cancel"):
-        get_tree().quit()
-
 func add_tail_segment(grid_position):
     var tail_segment = tail_scene.instantiate()
     tail_segment.name = "TailBody" + str(tail_segments.size())
