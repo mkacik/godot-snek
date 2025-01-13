@@ -52,7 +52,6 @@ func move() -> void:
     target_position = position + direction * cell_size;
 
 func _on_body_entered(body: Node2D) -> void:
-    print(body.name)
     if (body.name == "Apple"):
         apple_eaten.emit()
     else:

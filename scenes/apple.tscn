@@ -1,99 +1,19 @@
-[gd_scene load_steps=15 format=3 uid="uid://b7xulcvavdwjv"]
-
-[ext_resource type="Script" path="res://scenes/apple.gd" id="1_17prn"]
-[ext_resource type="Texture2D" uid="uid://bnmilkmtstby6" path="res://art/apple.png" id="1_hmlov"]
+[gd_scene load_steps=2 format=3 uid="uid://b7xulcvavdwjv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pcolr"]
-size = Vector2(14, 14)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_b4ei6"]
-atlas = ExtResource("1_hmlov")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_npv0f"]
-atlas = ExtResource("1_hmlov")
-region = Rect2(16, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_oaowu"]
-atlas = ExtResource("1_hmlov")
-region = Rect2(32, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rrm28"]
-atlas = ExtResource("1_hmlov")
-region = Rect2(48, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_x7i7e"]
-atlas = ExtResource("1_hmlov")
-region = Rect2(64, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gdq5f"]
-atlas = ExtResource("1_hmlov")
-region = Rect2(0, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6nyh8"]
-atlas = ExtResource("1_hmlov")
-region = Rect2(16, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8doag"]
-atlas = ExtResource("1_hmlov")
-region = Rect2(32, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0wd1f"]
-atlas = ExtResource("1_hmlov")
-region = Rect2(48, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tuwev"]
-atlas = ExtResource("1_hmlov")
-region = Rect2(64, 16, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_gljys"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_b4ei6")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_npv0f")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_oaowu")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rrm28")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_x7i7e")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gdq5f")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6nyh8")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8doag")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0wd1f")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tuwev")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
+size = Vector2(12, 12)
 
 [node name="Apple" type="StaticBody2D"]
 visible = false
-script = ExtResource("1_17prn")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(8, 8)
 shape = SubResource("RectangleShape2D_pcolr")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(8, 8)
-sprite_frames = SubResource("SpriteFrames_gljys")
-frame_progress = 0.0196355
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 14.0
+offset_bottom = 14.0
+color = Color(0.0229099, 0.683474, 0.371867, 1)

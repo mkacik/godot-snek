@@ -38,6 +38,7 @@ visible = false
 [node name="HUD" parent="." instance=ExtResource("3_uv6ks")]
 
 [connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]
+[connection signal="tail_left_previous_cell" from="TailEnd" to="." method="free_up_previous_tail_position"]
 [connection signal="apple_eaten" from="Player" to="." method="apple_eaten"]
 [connection signal="game_over" from="Player" to="." method="game_over"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]

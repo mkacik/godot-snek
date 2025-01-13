@@ -3,12 +3,17 @@ extends Node
 @export var cell_size: int = 16
 @export var tail_scene: PackedScene
 var tail_segments: Array = [];
+var previous_tail_position
 
 func _ready() -> void:
     pass
 
 func _process(_delta: float) -> void:
     pass
+
+func _input(event):
+    if event.is_action_pressed("ui_cancel"):
+        get_tree().quit()
 
 func add_tail_segment(grid_position):
     var tail_segment = tail_scene.instantiate()
@@ -36,6 +41,7 @@ func new_game():
         $Level.mark_grid_cell_occupied(grid_position)
 
     $TailEnd.start(grid_position * cell_size)
+    previous_tail_position = grid_position
     
     move_apple_to_random_free_position()
     $Apple.show()
@@ -75,11 +81,19 @@ func tick() -> void:
     segment_to_move.set_deferred("position", player_grid_position * cell_size)
 
     $Player.call_deferred("move")
-    $TailEnd.move(new_tail_end_target_position)
     
+    previous_tail_position = $TailEnd.position / cell_size
+    $TailEnd.move(new_tail_end_target_position)
+
     # mark player's target position as occupied
     var new_player_target_grid_position = $Player.target_position / cell_size
     $Level.mark_grid_cell_occupied(new_player_target_grid_position)
+
+func free_up_previous_tail_position() -> void:
+    # only if player is not moving into there in the meantime
+    var player_target_grid_position = $Player.target_position / cell_size
+    if previous_tail_position != player_target_grid_position:
+        $Level.mark_grid_cell_unoccupied(previous_tail_position)
 
 func _on_move_timer_timeout() -> void:
     tick()
