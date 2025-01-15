@@ -1,5 +1,7 @@
 extends Node
 
+const MOVE_ANIMATION_SPEED = 100
+
 static func clamped(pos: Vector2, a: Vector2, b: Vector2) -> Vector2:
     var min_pos = Vector2.ZERO
     var max_pos = Vector2.ZERO

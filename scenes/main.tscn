@@ -1,6 +1,5 @@
-[gd_scene load_steps=7 format=3 uid="uid://ci0v6bd3v8irk"]
+[gd_scene load_steps=6 format=3 uid="uid://ci0v6bd3v8irk"]
 
-[ext_resource type="PackedScene" uid="uid://crojdhwqcostg" path="res://scenes/player.tscn" id="1_e3l1q"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_pmvye"]
 [ext_resource type="PackedScene" uid="uid://cy37563fghig2" path="res://scenes/tail.tscn" id="2_u8psf"]
 [ext_resource type="PackedScene" uid="uid://bvrxvn86aje38" path="res://scenes/tail_end.tscn" id="3_tr712"]
@@ -11,9 +10,6 @@
 script = ExtResource("1_pmvye")
 tail_scene = ExtResource("2_u8psf")
 
-[node name="MoveTimer" type="Timer" parent="."]
-wait_time = 0.25
-
 [node name="Background" type="ColorRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,20 +18,16 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
+[node name="MoveTimer" type="Timer" parent="."]
+wait_time = 0.25
+
 [node name="TailEnd" parent="." instance=ExtResource("3_tr712")]
 visible = false
-move_animation_speed = 100
-
-[node name="Player" parent="." instance=ExtResource("1_e3l1q")]
-move_animation_speed = 100
 
 [node name="Level" parent="." instance=ExtResource("4_0euvk")]
-visible = false
 
 [node name="HUD" parent="." instance=ExtResource("3_uv6ks")]
 
 [connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]
 [connection signal="tail_left_previous_cell" from="TailEnd" to="." method="free_up_previous_tail_position"]
-[connection signal="apple_eaten" from="Player" to="." method="apple_eaten"]
-[connection signal="game_over" from="Player" to="." method="game_over"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]

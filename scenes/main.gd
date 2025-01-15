@@ -23,16 +23,14 @@ func add_tail_segment(grid_position):
 func new_game():
     $Level.start()
 
-    var grid_position: Vector2 = Vector2(8, 5)    
-    $Player.start(grid_position * cell_size)
-    $Level.mark_grid_cell_occupied(grid_position)
-
+    var grid_position: Vector2 = Vector2(8, 5)
     for direction in [Vector2.LEFT, Vector2.LEFT, Vector2.DOWN, Vector2.DOWN, Vector2.DOWN]:
         grid_position = grid_position + direction
         add_tail_segment(grid_position)    
         $Level.mark_grid_cell_occupied(grid_position)
 
     $TailEnd.start(grid_position * cell_size)
+    
     previous_tail_position = grid_position
     
     $MoveTimer.start()
@@ -41,7 +39,6 @@ func game_over():
     $MoveTimer.stop()
 
     $Level.hide()
-    $Player.hide()
     $TailEnd.hide()
     
     tail_segments.clear()
@@ -50,10 +47,8 @@ func game_over():
     $HUD.show_game_over_message()
 
 func tick() -> void:
-    # TODO: when tail leaves a cell completely it should be marked
-    # as unoccupied
     
-    var player_grid_position = $Player.position / cell_size
+    var player_grid_position = $Level/Player.position / cell_size
 
     # pick the last tail segment
     # disable it's collisions so it does not interfere with the player
@@ -68,23 +63,18 @@ func tick() -> void:
     segment_to_move.deferred_disable_collisions()
     segment_to_move.set_deferred("position", player_grid_position * cell_size)
 
-    $Player.call_deferred("move")
-    
     previous_tail_position = $TailEnd.position / cell_size
     $TailEnd.move(new_tail_end_target_position)
 
-    # mark player's target position as occupied
-    var new_player_target_grid_position = $Player.target_position / cell_size
-    $Level.mark_grid_cell_occupied(new_player_target_grid_position)
-
 func free_up_previous_tail_position() -> void:
     # only if player is not moving into there in the meantime
-    var player_target_grid_position = $Player.target_position / cell_size
+    var player_target_grid_position = $Level/Player.target_position / cell_size
     if previous_tail_position != player_target_grid_position:
         $Level.mark_grid_cell_unoccupied(previous_tail_position)
 
 func _on_move_timer_timeout() -> void:
     tick()
+    $Level.tick()
 
 func apple_eaten() -> void:
     add_tail_segment(tail_segments[-1].position / cell_size)
