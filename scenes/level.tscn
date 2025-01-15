@@ -1,19 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://02oxhj8djhwr"]
+[gd_scene load_steps=5 format=3 uid="uid://02oxhj8djhwr"]
 
 [ext_resource type="Script" path="res://scenes/level.gd" id="1_tjnu4"]
 [ext_resource type="PackedScene" uid="uid://kdaaygddkmlt" path="res://scenes/wall.tscn" id="2_arvb6"]
+[ext_resource type="PackedScene" uid="uid://b7xulcvavdwjv" path="res://scenes/apple.tscn" id="3_6tv26"]
+[ext_resource type="PackedScene" uid="uid://cy37563fghig2" path="res://scenes/tail.tscn" id="3_ki6ss"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_tjnu4")
+wall_scene = ExtResource("2_arvb6")
+tail_scene = ExtResource("3_ki6ss")
+apple_scene = ExtResource("3_6tv26")
 
-[node name="WallN" parent="." instance=ExtResource("2_arvb6")]
-visible = true
-
-[node name="WallS" parent="." instance=ExtResource("2_arvb6")]
-visible = true
-
-[node name="WallE" parent="." instance=ExtResource("2_arvb6")]
-visible = true
-
-[node name="WallW" parent="." instance=ExtResource("2_arvb6")]
+[node name="Apple" parent="." instance=ExtResource("3_6tv26")]
 visible = true

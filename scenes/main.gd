@@ -20,10 +20,6 @@ func add_tail_segment(grid_position):
     # I want the tail body to display under the tail end and player
     $Background.call_deferred("add_sibling", tail_segment)
 
-func move_apple_to_random_free_position():
-    var grid_position = $Level.get_random_unoccupied_grid_cell()
-    $Apple.position = grid_position * cell_size
-
 func new_game():
     $Level.start()
 
@@ -39,9 +35,6 @@ func new_game():
     $TailEnd.start(grid_position * cell_size)
     previous_tail_position = grid_position
     
-    move_apple_to_random_free_position()
-    $Apple.show()
-    
     $MoveTimer.start()
     
 func game_over():
@@ -49,7 +42,6 @@ func game_over():
 
     $Level.hide()
     $Player.hide()
-    $Apple.hide()
     $TailEnd.hide()
     
     tail_segments.clear()
@@ -96,5 +88,4 @@ func _on_move_timer_timeout() -> void:
 
 func apple_eaten() -> void:
     add_tail_segment(tail_segments[-1].position / cell_size)
-    move_apple_to_random_free_position()
-    
+    $Level.spawn_apple()

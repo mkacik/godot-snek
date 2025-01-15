@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://ci0v6bd3v8irk"]
+[gd_scene load_steps=7 format=3 uid="uid://ci0v6bd3v8irk"]
 
 [ext_resource type="PackedScene" uid="uid://crojdhwqcostg" path="res://scenes/player.tscn" id="1_e3l1q"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_pmvye"]
 [ext_resource type="PackedScene" uid="uid://cy37563fghig2" path="res://scenes/tail.tscn" id="2_u8psf"]
 [ext_resource type="PackedScene" uid="uid://bvrxvn86aje38" path="res://scenes/tail_end.tscn" id="3_tr712"]
 [ext_resource type="PackedScene" uid="uid://ccmivnmm1cxdu" path="res://scenes/hud.tscn" id="3_uv6ks"]
-[ext_resource type="PackedScene" uid="uid://b7xulcvavdwjv" path="res://scenes/apple.tscn" id="3_y07pc"]
 [ext_resource type="PackedScene" uid="uid://02oxhj8djhwr" path="res://scenes/level.tscn" id="4_0euvk"]
 
 [node name="Main" type="Node"]
@@ -22,8 +21,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
-
-[node name="Apple" parent="." instance=ExtResource("3_y07pc")]
 
 [node name="TailEnd" parent="." instance=ExtResource("3_tr712")]
 visible = false

@@ -1,5 +1,9 @@
 extends Node2D
 
+@export var wall_scene: PackedScene
+@export var tail_scene: PackedScene
+@export var apple_scene: PackedScene
+
 @export var cell_size: int = 16
 var grid_size: Vector2
 var cells: Cells
@@ -8,28 +12,35 @@ func _ready() -> void:
     grid_size = get_viewport_rect().size / cell_size
     cells = Cells.new(grid_size)
 
-func _process(_delta: float) -> void:
-    pass
+func add_wall(grid_cell: Vector2):
+    var wall = wall_scene.instantiate()
+    wall.position = grid_cell * cell_size
+    add_child(wall)
+    cells.mark_occupied(grid_cell)
 
 func position_walls() -> void:
-    $WallN.position = Vector2.ZERO
-    $WallS.position = Vector2(0, grid_size.y - 1) * cell_size
+    for x in range(0, grid_size.x):
+        # only top and bottom rows
+        for y in [0, grid_size.y - 1]:
+            print(x, "-", y)
+            add_wall(Vector2(x, y))
     
-    var outer_wall_x_scale = Vector2(grid_size.x, 1)
-    $WallN.apply_scale(outer_wall_x_scale)
-    $WallS.apply_scale(outer_wall_x_scale)
-    
-    $WallE.position = Vector2(grid_size.x - 1, 1) * cell_size
-    $WallW.position = Vector2(0, 1) * cell_size
-
-    var outer_wall_y_scale = Vector2(1, grid_size.y - 2)
-    $WallE.apply_scale(outer_wall_y_scale)
-    $WallW.apply_scale(outer_wall_y_scale)
+    # skipping first and last rows because they were covered by loop above
+    for y in range(1, grid_size.y - 1):
+        for x in [0, grid_size.x - 1]:
+            add_wall(Vector2(x, y))
 
 func start() -> void:
     cells.initialize()
     position_walls()
+    spawn_apple()
     show()
+
+func spawn_apple() -> void:
+    # for now just reposition the single Apple that is child of this scene.
+    var cell = cells.get_random_free_cell()
+    $Apple.position = cell * cell_size
+    cells.mark_occupied(cell)
 
 func mark_grid_cell_occupied(cell: Vector2) -> void:
     cells.mark_occupied(cell)
