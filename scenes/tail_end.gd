@@ -28,7 +28,7 @@ func start(new_position: Vector2) -> void:
     position = new_position
     target_position = new_position
     direction = Vector2.ZERO
-    
+
 func stop() -> void:
     position = Vector2.ZERO
     target_position = Vector2.ZERO

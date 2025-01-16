@@ -15,7 +15,6 @@ tail_scene = ExtResource("3_ki6ss")
 apple_scene = ExtResource("3_6tv26")
 
 [node name="MoveTimer" type="Timer" parent="."]
-wait_time = 0.25
 
 [node name="TailEnd" parent="." instance=ExtResource("5_dmfuh")]
 

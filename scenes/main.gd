@@ -8,7 +8,7 @@ func _process(_delta: float) -> void:
 
 func new_game():
     $Level.start()
-    
+
 func game_over():
     $Level.stop()
     $HUD.show_game_over_message()

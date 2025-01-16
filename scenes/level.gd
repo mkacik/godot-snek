@@ -26,6 +26,10 @@ var tail_end_target_cell
 var tail_segments = []
 
 func _ready() -> void:
+    $MoveTimer.wait_time = Common.MOVE_INTERVAL
+    # print("Min interval: ", 1.0 * Common.CELL_SIZE / Common.MOVE_ANIMATION_SPEED)
+    # print("Current move interval: ", $MoveTimer.wait_time)
+
     grid_size = get_viewport_rect().size / CELL_SIZE
     cells = Cells.new(grid_size)
 
@@ -54,12 +58,12 @@ func spawn_walls() -> void:
     for x in range(0, grid_size.x):
         spawn_wall(Vector2(x, 0), "WallNorth" + str(x))
         spawn_wall(Vector2(x, grid_size.y - 1), "WallSouth" + str(x))
-    
+
     # skipping first and last rows because they were covered by loop above
     for y in range(1, grid_size.y - 1):
         spawn_wall(Vector2(0, y), "WallWest" + str(y))
-        spawn_wall(Vector2(grid_size.x - 1, y), "WallEast" + str(y))          
-            
+        spawn_wall(Vector2(grid_size.x - 1, y), "WallEast" + str(y))
+
 func spawn_apple() -> void:
     # no need to mark previous cell free: this function is only called on start
     # and when apple is eaten. In latter case, that means snake head is now
@@ -73,10 +77,10 @@ func spawn_tail_segment(cell: Vector2) -> void:
     tail_segment.name = "TailSegment" + str(tail_segments.size())
     tail_segment.position = cell * CELL_SIZE
     tail_segments.push_back(tail_segment)
-    
+
     # This will ensure that new tail segments will be rendered every frame
     # before the Apple, Player and dynamically added walls.
-    $TailEnd.call_deferred("add_sibling", tail_segment)    
+    call_deferred("add_child", tail_segment)
     cells.mark_occupied(cell)
 
 func spawn_player(cell: Vector2) -> void:
@@ -94,16 +98,16 @@ func spawn_tail_end(cell: Vector2) -> void:
     $TailEnd.start(cell * CELL_SIZE)
 
 func spawn_snake() -> void:
-    var cell = Vector2(8, 5)    
+    var cell = Vector2(8, 5)
     spawn_player(cell)
 
     var tail_segment_relative_positions = [Vector2.LEFT, Vector2.LEFT, Vector2.DOWN, Vector2.DOWN, Vector2.DOWN]
     for direction in tail_segment_relative_positions:
         cell += direction
-        spawn_tail_segment(cell) 
+        spawn_tail_segment(cell)
 
     spawn_tail_end(cell)
-    
+
     # Pick staring direction. Can go in one of 3 directions
     var valid_directions = [Vector2.LEFT, Vector2.DOWN, Vector2.RIGHT, Vector2.UP]
     valid_directions.erase(tail_segment_relative_positions[0])
@@ -113,7 +117,7 @@ func start() -> void:
     cells.initialize()
     spawn_snake()
     spawn_walls()
-    spawn_apple()    
+    spawn_apple()
     show()
     $MoveTimer.start()
 
@@ -131,7 +135,7 @@ func tick() -> void:
     player_target_cell = player_cell + next_direction
     $Player.move(player_target_cell * CELL_SIZE)
     cells.mark_occupied(player_target_cell)
-    
+
     # 2A. Move the body: pick the last tail segment and pop it where player
     # is moving away from. Before the move collisions need to be disabled,
     # to not interfere with player.
@@ -139,7 +143,7 @@ func tick() -> void:
     last_segment.deferred_disable_collisions()
     last_segment.set_deferred("position", player_cell * CELL_SIZE)
     tail_segments.push_front(last_segment)
-    
+
     # 2B. Reenable collisions for the now second segment ,that is no longer
     # touching the player.
     tail_segments[1].deferred_enable_collisions()
@@ -149,7 +153,7 @@ func tick() -> void:
     # this function, so their positions will always be on "whole" cell.
     tail_end_target_cell = tail_segments[-1].position / CELL_SIZE
     $TailEnd.move(tail_end_target_cell * CELL_SIZE)
-    
+
 func _on_player_finished_moving() -> void:
     player_cell = player_target_cell
 
