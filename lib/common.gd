@@ -1,6 +1,11 @@
 extends Node
 
-const MOVE_ANIMATION_SPEED = 100
+# WATCH OUT! Move speed (in px/s) has to be synchronized with cell size and move
+# tick timer. If snake head is not moving out of previous cell fast enough, tail
+# segments moving every tick will collide with it.
+# MININUM_MOVE_INTERVAL ~= CELL_SIZE / MOVE_ANIMATION_SPEED + 0.01
+const MOVE_ANIMATION_SPEED: int = 200
+const CELL_SIZE: int = 16
 
 # Default clamp implementation requires that first argument passed contains
 # the min values and second contains the max. This helper function drops this

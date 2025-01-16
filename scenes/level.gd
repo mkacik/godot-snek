@@ -1,12 +1,14 @@
 extends Node2D
 
+const Common = preload("res://lib/common.gd")
+const CELL_SIZE: int = Common.CELL_SIZE
+
 signal game_over
 
 @export var wall_scene: PackedScene
 @export var tail_scene: PackedScene
 @export var apple_scene: PackedScene
 
-@export var cell_size: int = 16
 var grid_size: Vector2
 var cells: Cells
 
@@ -24,7 +26,7 @@ var tail_end_target_cell
 var tail_segments = []
 
 func _ready() -> void:
-    grid_size = get_viewport_rect().size / cell_size
+    grid_size = get_viewport_rect().size / CELL_SIZE
     cells = Cells.new(grid_size)
 
 func _process(_delta: float) -> void:
@@ -44,7 +46,7 @@ func _process(_delta: float) -> void:
 func spawn_wall(cell: Vector2, new_name: String) -> void:
     var wall = wall_scene.instantiate()
     wall.name = new_name
-    wall.position = cell * cell_size
+    wall.position = cell * CELL_SIZE
     add_child(wall)
     cells.mark_occupied(cell)
 
@@ -63,13 +65,13 @@ func spawn_apple() -> void:
     # and when apple is eaten. In latter case, that means snake head is now
     # occupying the position
     var cell = cells.get_random_free_cell()
-    $Apple.position = cell * cell_size
+    $Apple.position = cell * CELL_SIZE
     cells.mark_occupied(cell)
 
 func spawn_tail_segment(cell: Vector2) -> void:
     var tail_segment = tail_scene.instantiate()
     tail_segment.name = "TailSegment" + str(tail_segments.size())
-    tail_segment.position = cell * cell_size
+    tail_segment.position = cell * CELL_SIZE
     tail_segments.push_back(tail_segment)
     
     # This will ensure that new tail segments will be rendered every frame
@@ -80,7 +82,7 @@ func spawn_tail_segment(cell: Vector2) -> void:
 func spawn_player(cell: Vector2) -> void:
     player_cell = cell
     player_target_cell = cell
-    $Player.start(cell * cell_size)
+    $Player.start(cell * CELL_SIZE)
     cells.mark_occupied(cell)
 
 func spawn_tail_end(cell: Vector2) -> void:
@@ -89,7 +91,7 @@ func spawn_tail_end(cell: Vector2) -> void:
     # at the end of tail. It's already occupied, so no need to mark it.
     tail_end_cell = cell
     tail_end_target_cell = cell
-    $TailEnd.start(cell * cell_size)
+    $TailEnd.start(cell * CELL_SIZE)
 
 func spawn_snake() -> void:
     var cell = Vector2(8, 5)    
@@ -127,7 +129,7 @@ func stop() -> void:
 func tick() -> void:
     # 1. Move the player.
     player_target_cell = player_cell + next_direction
-    $Player.move(player_target_cell * cell_size)
+    $Player.move(player_target_cell * CELL_SIZE)
     cells.mark_occupied(player_target_cell)
     
     # 2A. Move the body: pick the last tail segment and pop it where player
@@ -135,7 +137,7 @@ func tick() -> void:
     # to not interfere with player.
     var last_segment = tail_segments.pop_back()
     last_segment.deferred_disable_collisions()
-    last_segment.set_deferred("position", player_cell * cell_size)
+    last_segment.set_deferred("position", player_cell * CELL_SIZE)
     tail_segments.push_front(last_segment)
     
     # 2B. Reenable collisions for the now second segment ,that is no longer
@@ -143,9 +145,10 @@ func tick() -> void:
     tail_segments[1].deferred_enable_collisions()
 
     # 3. Move the tail end towards the last tail segment until they are in the
-    # same cell
-    tail_end_target_cell = tail_segments[-1].position / cell_size
-    $TailEnd.move(tail_end_target_cell * cell_size)
+    # same cell. Tail segments are not moving on their own, are only moved in
+    # this function, so their positions will always be on "whole" cell.
+    tail_end_target_cell = tail_segments[-1].position / CELL_SIZE
+    $TailEnd.move(tail_end_target_cell * CELL_SIZE)
     
 func _on_player_finished_moving() -> void:
     player_cell = player_target_cell
