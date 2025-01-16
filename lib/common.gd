@@ -2,6 +2,9 @@ extends Node
 
 const MOVE_ANIMATION_SPEED = 100
 
+# Default clamp implementation requires that first argument passed contains
+# the min values and second contains the max. This helper function drops this
+# requirement.
 static func clamped(pos: Vector2, a: Vector2, b: Vector2) -> Vector2:
     var min_pos = Vector2.ZERO
     var max_pos = Vector2.ZERO

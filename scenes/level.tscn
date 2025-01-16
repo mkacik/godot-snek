@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://02oxhj8djhwr"]
+[gd_scene load_steps=7 format=3 uid="uid://02oxhj8djhwr"]
 
 [ext_resource type="Script" path="res://scenes/level.gd" id="1_tjnu4"]
 [ext_resource type="PackedScene" uid="uid://kdaaygddkmlt" path="res://scenes/wall.tscn" id="2_arvb6"]
 [ext_resource type="PackedScene" uid="uid://b7xulcvavdwjv" path="res://scenes/apple.tscn" id="3_6tv26"]
 [ext_resource type="PackedScene" uid="uid://cy37563fghig2" path="res://scenes/tail.tscn" id="3_ki6ss"]
 [ext_resource type="PackedScene" uid="uid://crojdhwqcostg" path="res://scenes/player.tscn" id="3_rgire"]
+[ext_resource type="PackedScene" uid="uid://bvrxvn86aje38" path="res://scenes/tail_end.tscn" id="5_dmfuh"]
 
 [node name="Level" type="Node2D"]
 visible = false
@@ -13,14 +14,18 @@ wall_scene = ExtResource("2_arvb6")
 tail_scene = ExtResource("3_ki6ss")
 apple_scene = ExtResource("3_6tv26")
 
+[node name="MoveTimer" type="Timer" parent="."]
+wait_time = 0.25
+
+[node name="TailEnd" parent="." instance=ExtResource("5_dmfuh")]
+
 [node name="Apple" parent="." instance=ExtResource("3_6tv26")]
 visible = true
 
 [node name="Player" parent="." instance=ExtResource("3_rgire")]
 
-[node name="MoveTimer" type="Timer" parent="."]
-
-[connection signal="apple_eaten" from="Player" to="." method="spawn_apple"]
+[connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]
+[connection signal="finished_moving" from="TailEnd" to="." method="_on_tail_end_finished_moving"]
+[connection signal="apple_eaten" from="Player" to="." method="_on_player_apple_eaten"]
 [connection signal="finished_moving" from="Player" to="." method="_on_player_finished_moving"]
 [connection signal="wall_hit" from="Player" to="." method="_on_player_wall_hit"]
-[connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]
