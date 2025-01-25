@@ -4,26 +4,29 @@ const Common = preload("res://lib/common.gd")
 const CELL_SIZE: int = Common.CELL_SIZE
 
 signal game_over
+signal game_paused
+signal game_unpaused
 
 @export var wall_scene: PackedScene
 @export var tail_scene: PackedScene
-@export var apple_scene: PackedScene
 
 var grid_size: Vector2
 var cells: Cells
+var paused: bool
+
+# One of cardinal directions (Vector.UP, etc.) or Vector2.ZERO
+var next_direction: Vector2
 
 # All relevant positions that need tracking, all expressed as grid cell.
 # Storing them in Level class allows for making moving child nodes cell-size
 # agnostic
-var next_direction
+var player_cell: Vector2
+var player_target_cell: Vector2
+var tail_end_cell: Vector2
+var tail_end_target_cell: Vector2
 
-var player_cell
-var player_target_cell
-
-var tail_end_cell
-var tail_end_target_cell
-
-var tail_segments = []
+# Stores scene instances created via spawn_tail_segment()
+var tail_segments: Array = []
 
 func _ready() -> void:
     $MoveTimer.wait_time = Common.MOVE_INTERVAL
@@ -34,6 +37,10 @@ func _ready() -> void:
     cells = Cells.new(grid_size)
 
 func _process(_delta: float) -> void:
+    # Do not capture inputs on pause screen, one can easily cheat like that :)
+    if paused:
+        return
+
     if Input.is_action_pressed("move_right"):
         if $Player.can_move(Vector2.RIGHT):
             next_direction = Vector2.RIGHT
@@ -46,6 +53,17 @@ func _process(_delta: float) -> void:
     elif Input.is_action_pressed("move_up"):
         if $Player.can_move(Vector2.UP):
             next_direction = Vector2.UP
+
+func _input(event: InputEvent) -> void:
+    # level is hidden while on "start" page, it's invalid to toggle pause there
+    if !visible:
+        return
+
+    if event.is_action_pressed("ui_cancel"):
+        if paused:
+            unpause()
+        else:
+            pause()
 
 func spawn_wall(cell: Vector2, new_name: String) -> void:
     var wall = wall_scene.instantiate()
@@ -130,6 +148,20 @@ func stop() -> void:
     get_tree().call_group("tail", "queue_free")
     tail_segments.clear()
 
+func pause():
+    paused = true
+    $MoveTimer.stop()
+    $Player.pause()
+    $TailEnd.pause()
+    game_paused.emit()
+
+func unpause():
+    game_unpaused.emit()
+    $Player.unpause()
+    $TailEnd.unpause()
+    $MoveTimer.start()
+    paused = false
+
 func tick() -> void:
     # 1. Move the player.
     player_target_cell = player_cell + next_direction
@@ -158,12 +190,10 @@ func _on_player_finished_moving() -> void:
     player_cell = player_target_cell
 
 func _on_tail_end_finished_moving() -> void:
+    # Free the position tail just moved out of unless player is moving there
+    if tail_end_cell != player_target_cell:
+        cells.mark_free(tail_end_cell)
     tail_end_cell = tail_end_target_cell
-
-    # only if player is not moving into there in the meantime
-    # var player_target_grid_position = $Level/Player.target_position / cell_size
-    # if previous_tail_position != player_target_grid_position:
-    #    $Level.mark_grid_cell_unoccupied(previous_tail_position)
 
 func _on_player_apple_eaten() -> void:
     spawn_tail_segment(tail_end_target_cell)

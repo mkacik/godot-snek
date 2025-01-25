@@ -19,5 +19,7 @@ color = Color(0, 0, 0, 1)
 
 [node name="HUD" parent="." instance=ExtResource("3_uv6ks")]
 
-[connection signal="game_over" from="Level" to="." method="game_over"]
-[connection signal="start_game" from="HUD" to="." method="new_game"]
+[connection signal="game_over" from="Level" to="." method="_on_level_game_over"]
+[connection signal="game_paused" from="Level" to="." method="_on_level_game_paused"]
+[connection signal="game_unpaused" from="Level" to="." method="_on_level_game_unpaused"]
+[connection signal="start_game" from="HUD" to="." method="_on_hud_start_game"]
