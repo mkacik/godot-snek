@@ -5,8 +5,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ajpk"]
 size = Vector2(16, 16)
 
-[node name="TailEnd" type="AnimatableBody2D"]
-sync_to_physics = false
+[node name="TailEnd" type="Area2D"]
+collision_mask = 0
 script = ExtResource("1_qr2m2")
 metadata/_edit_group_ = true
 

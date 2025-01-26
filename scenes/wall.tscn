@@ -1,6 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://kdaaygddkmlt"]
-
-[ext_resource type="Texture2D" uid="uid://e2653otifgad" path="res://art/wall.png" id="1_rptac"]
+[gd_scene load_steps=2 format=3 uid="uid://kdaaygddkmlt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d1k43"]
 size = Vector2(16, 16)
@@ -13,8 +11,7 @@ metadata/_edit_group_ = true
 position = Vector2(8, 8)
 shape = SubResource("RectangleShape2D_d1k43")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(8, 8)
-texture = ExtResource("1_rptac")
-region_enabled = true
-region_rect = Rect2(32, 0, 16, 16)
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.817521, 0.817521, 0.817521, 1)

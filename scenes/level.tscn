@@ -8,12 +8,16 @@
 [ext_resource type="PackedScene" uid="uid://bvrxvn86aje38" path="res://scenes/tail_end.tscn" id="5_dmfuh"]
 
 [node name="Level" type="Node2D"]
-visible = false
+position = Vector2(0, 32)
 script = ExtResource("1_tjnu4")
 wall_scene = ExtResource("2_arvb6")
 tail_scene = ExtResource("3_ki6ss")
+metadata/_edit_group_ = true
 
-[node name="MoveTimer" type="Timer" parent="."]
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 640.0
+offset_bottom = 448.0
+color = Color(0.12, 0.12, 0.12, 1)
 
 [node name="TailEnd" parent="." instance=ExtResource("5_dmfuh")]
 
@@ -22,8 +26,10 @@ visible = true
 
 [node name="Player" parent="." instance=ExtResource("3_rgire")]
 
-[connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]
+[node name="MoveTimer" type="Timer" parent="."]
+
 [connection signal="finished_moving" from="TailEnd" to="." method="_on_tail_end_finished_moving"]
 [connection signal="apple_eaten" from="Player" to="." method="_on_player_apple_eaten"]
 [connection signal="finished_moving" from="Player" to="." method="_on_player_finished_moving"]
 [connection signal="wall_hit" from="Player" to="." method="_on_player_wall_hit"]
+[connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]

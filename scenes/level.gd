@@ -3,7 +3,8 @@ extends Node2D
 const Common = preload("res://lib/common.gd")
 const CELL_SIZE: int = Common.CELL_SIZE
 
-signal game_over
+signal score_changed(new_score: int)
+signal game_over(final_score: int)
 signal game_paused
 signal game_unpaused
 
@@ -13,6 +14,7 @@ signal game_unpaused
 var grid_size: Vector2
 var cells: Cells
 var paused: bool
+var score: int
 
 # One of cardinal directions (Vector.UP, etc.) or Vector2.ZERO
 var next_direction: Vector2
@@ -33,7 +35,7 @@ func _ready() -> void:
     # print("Min interval: ", 1.0 * Common.CELL_SIZE / Common.MOVE_ANIMATION_SPEED)
     # print("Current move interval: ", $MoveTimer.wait_time)
 
-    grid_size = get_viewport_rect().size / CELL_SIZE
+    grid_size = $Background.size / CELL_SIZE
     cells = Cells.new(grid_size)
 
 func _process(_delta: float) -> void:
@@ -132,6 +134,7 @@ func spawn_snake() -> void:
     next_direction = valid_directions.pick_random()
 
 func start() -> void:
+    score = 0
     cells.initialize()
     spawn_snake()
     spawn_walls()
@@ -186,6 +189,10 @@ func tick() -> void:
     tail_end_target_cell = tail_segments[-1].position / CELL_SIZE
     $TailEnd.move(tail_end_target_cell * CELL_SIZE)
 
+func bump_score():
+    score += 1
+    score_changed.emit(score)
+
 func _on_player_finished_moving() -> void:
     player_cell = player_target_cell
 
@@ -198,9 +205,10 @@ func _on_tail_end_finished_moving() -> void:
 func _on_player_apple_eaten() -> void:
     spawn_tail_segment(tail_end_target_cell)
     spawn_apple()
+    bump_score()
 
 func _on_player_wall_hit() -> void:
-    game_over.emit()
+    game_over.emit(score)
 
 func _on_move_timer_timeout() -> void:
     tick()
